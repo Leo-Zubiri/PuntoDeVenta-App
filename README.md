@@ -61,3 +61,53 @@ Desde la terminal:
 
 ## Modelado
 
+Se crean modelos en el archivo de **schema.prisma**
+
+Se indican los tipos de dato, y prisma se encargará de proporcionarlo a la DB con el formato correcto.
+
+> Un producto tiene una categoria y una Categoria tiene varios Productos. La relación se hace mediante llaves primarias y foráneas, por lo tanto, deben ser del mismo tipo.
+
+```js
+model Producto {
+  id Int @id @default(autoincrement())
+  nombre String
+  precio Float
+  imagen String?
+  categoriaId Int
+  categoria Categoria @relation(fields: [categoriaId],references: [id])
+}
+
+model Categoria {
+  id Int @id @default(autoincrement()) 
+  nombre String
+  icono String
+  productos Producto[]
+}
+```
+
+---
+
+## Migración
+
+El esquema que estructuremos en prisma debe ser migrado, es decir, aplicado directamente en la base de datos mediante: 
+
+```npx prisma migrate dev```
+
+![](documentation/3.png)
+
+> **Siempre que se edite o agregue al esquema se debe migrar para actualizar el esquema**
+
+## RESET DATOS TABLAS
+
+```npx prisma migrate reset```
+
+## Interfaz Recursos Prisma
+
+```npx prisma studio```
+
+![](documentation/4.png)
+
+---
+
+## Seeding
+Sembrar información a la base de datos
