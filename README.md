@@ -57,3 +57,7 @@ Desde la terminal:
 
 ```create database puntoventa;```
 
+---
+
+## Modelado
+
