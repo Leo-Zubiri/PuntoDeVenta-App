@@ -110,4 +110,67 @@ El esquema que estructuremos en prisma debe ser migrado, es decir, aplicado dire
 ---
 
 ## Seeding
-Sembrar información a la base de datos
+Sembrar información a la base de datos. Por ejemplo, con la siguiente información:
+
+```js
+const categorias = [
+    {
+        icono: "cafe",
+        nombre: "Café"
+      },
+      {
+        icono: "hamburguesa",
+        nombre: "Hamburguesas"
+      },
+]
+
+// Basado en el modelo
+model Categoria {
+  id Int @id @default(autoincrement()) 
+  nombre String
+  icono String
+  productos Producto[]
+}
+```
+Crear archivo **seed.ts** en la carpeta prisma
+
+```js
+import {categorias} from './data/categorias'  // Arreglo de categorias
+
+// Siempre que se manipule la bdd
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
+
+const main = async () : Promise<void> => {
+    try {
+        //instancia prisma - modelo en minusculas - metodo
+        await prisma.categoria.createMany({
+            data: categorias
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+main()
+```
+## **Para sembrar los valores:**
+Instalar dependencia ```npm i ts-node```
+
+Modificar el archivo **package.json** y agregar un nueva referencia para prisma y el comando seed:
+
+```js
+  ...
+  "prisma":{
+    "seed": "ts-node prisma/seed.ts"
+  },
+  ...
+```
+Desde la terminal ejecutar **npx prisma db seed**
+
+Lo anterior inserta los objetos segun el modelo y actualiza la base de datos.
+
+Si se ejecuta npx prisma studio los elementos se visualizarán.
+
+![](documentation/6.png)

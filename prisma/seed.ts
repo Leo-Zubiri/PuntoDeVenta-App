@@ -1,0 +1,25 @@
+
+import {productos} from './data/productos'
+
+import {categorias} from './data/categorias'
+
+// Siempre que se manipule la bdd
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
+
+const main = async () : Promise<void> => {
+    try {
+        await prisma.categoria.createMany({
+            data: categorias
+        })
+
+        await prisma.producto.createMany({
+            data: productos
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+main()
