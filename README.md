@@ -12,7 +12,9 @@ Desde el tailwind.config.js:
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./pages/**/*.{js,jsx,ts,tsx}"
+    "./layout/**/*.{js,jsx,ts,tsx}",
+    "./pages/**/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{js,jsx,ts,tsx}"
   ],
   theme: {
     extend: {},
@@ -174,3 +176,56 @@ Lo anterior inserta los objetos segun el modelo y actualiza la base de datos.
 Si se ejecuta npx prisma studio los elementos se visualizarán.
 
 ![](documentation/6.png)
+
+---
+
+# **Consultar BDD con NEXTJS y Prisma**
+
+## **Con server side props**
+
+```js
+
+import {PrismaClient} from '@prisma/client'
+
+export default function Home({categorias}) {
+  console.log(categorias)
+  return (
+    <h1> Next JS </h1>
+  )
+}
+
+export const getServerSideProps = async () => {
+  const prisma = new PrismaClient()
+
+  const categorias = await prisma.categoria.findMany();
+
+  return {
+    props: {
+      categorias
+    }
+  }
+}
+```
+
+## **Con la API de NEXTJS**
+
+> En la carpeta pages por defecto hay una carpeta llamada api, esos archivos siempre corren del lado del servidor. Se pueden acceder a través de su ruta respectiva **localhost:3000/api/archivo.js**
+
+Por ejemplo, en el directorio **pages - api - categorias.js** el contenido es el siguiente:
+
+```js
+
+import {PrismaClient} from '@prisma/client'
+
+const prisma = new PrismaClient()
+
+export default async function handler(req, res) {
+  //logic 
+  const categorias = await prisma.categoria.findMany()
+  res.status(200).json(categorias)
+}
+
+```
+
+## **¿Cuando utilizar ServerSideProps y cuando utilizar la API de NEXTJS**
+> ServerSideProps es mas cuando utilizas la informacion directamente en un componente, pero cuando necesitas extender esa informacion es mejor utilizar la API para que pueda ser accedido de manera mas sencilla.
