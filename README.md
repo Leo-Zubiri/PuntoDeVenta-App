@@ -229,3 +229,44 @@ export default async function handler(req, res) {
 
 ## **¿Cuando utilizar ServerSideProps y cuando utilizar la API de NEXTJS**
 > ServerSideProps es mas cuando utilizas la informacion directamente en un componente, pero cuando necesitas extender esa informacion es mejor utilizar la API para que pueda ser accedido de manera mas sencilla.
+
+## Context API
+
+1. Crear carpeta **context** en la raiz del proyecto
+2. Crear un archivo para el provider y colocar algo similar a lo siguiente:
+```js
+import React,{useState,useEffect,createContext} from 'react'
+
+const QuioscoContext = createContext()
+
+const QuioscoProvider = ({children}) => {
+  return (
+    <QuioscoContext.Provider
+        value={{
+            
+        }}
+    >
+        {children}
+    </QuioscoContext.Provider>
+  )
+}
+
+export {
+    QuioscoProvider
+}
+
+export default QuioscoContext
+```
+3. Desde el componente _app.js aplicar el Provider
+```js
+import {QuioscoProvider} from '../context/QuioscoProvider'
+
+function MyApp({ Component, pageProps }) {
+  return <QuioscoProvider>
+    <Component {...pageProps} />
+  </QuioscoProvider>
+}
+
+export default MyApp
+
+```
