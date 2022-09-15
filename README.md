@@ -270,3 +270,24 @@ function MyApp({ Component, pageProps }) {
 export default MyApp
 
 ```
+
+### **Crear carpeta hooks y useQuiosco.jsx**
+```js
+import { useContext } from "react";
+import QuioscoContext from "../context/QuioscoProvider";
+
+const useQuiosco = () => { 
+    return useContext(QuioscoContext);
+}
+
+export default useQuiosco;
+```
+
+---
+
+## Consumir API categorias
+```npm i axios```
+```js
+import axios from 'axios'
+const {data} = await axios('/api/categorias')
+```
